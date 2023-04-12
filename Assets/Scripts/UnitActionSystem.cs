@@ -16,6 +16,9 @@ public class UnitActionSystem : MonoBehaviour
     /// </summary>
     public event EventHandler OnSelectedUnitChanged;
 
+    /// <summary>
+    /// 已选中的单位
+    /// </summary>
     [SerializeField] private Unit selectedUnit;
 
     /// <summary>

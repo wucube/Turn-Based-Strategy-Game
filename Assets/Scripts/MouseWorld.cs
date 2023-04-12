@@ -23,7 +23,7 @@ public class MouseWorld : MonoBehaviour
     }
 
     /// <summary>
-    /// 获取鼠标射线碰撞点的坐标 
+    /// 获取鼠标点击平面的坐标 
     /// </summary>
     /// <returns></returns>
     public static Vector3 GetPosition()

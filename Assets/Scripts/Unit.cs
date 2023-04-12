@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 单位脚本
+/// </summary>
 public class Unit : MonoBehaviour
 {   
     [SerializeField] private Animator unitAnimator;
@@ -21,10 +24,22 @@ public class Unit : MonoBehaviour
     /// </summary>
     private Vector3 targetPosition;
 
+    /// <summary>
+    /// 单位的初始格子位置
+    /// </summary>
+    private GridPosition gridPosition;
+
     private void Awake() {
         
         targetPosition = transform.position;
-        
+    }
+
+    private void Start() 
+    {
+        //根据单位的位置得到对应格子位置
+        gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        //根据单位的格子位置添加对应格子
+        LevelGrid.Instance.AddUnitAtGridPosition(gridPosition,this);
     }
 
     // Update is called once per frame
@@ -46,6 +61,17 @@ public class Unit : MonoBehaviour
         }else{
             unitAnimator.SetBool("IsWalking", false);
         }
+
+        //根据单位位置得到新的格子位置
+        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        //如果新的格子位置不等于初始的格子位置，表明单位的格子位置已经改变
+        if(newGridPosition != gridPosition)
+        {
+            //单位移动，对应格子位置也改变
+            LevelGrid.Instance.UnitMovedGridPosition(this, gridPosition, newGridPosition);
+            gridPosition = newGridPosition;
+        }
+
         
     }
 
