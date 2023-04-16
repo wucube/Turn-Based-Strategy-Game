@@ -9,6 +9,10 @@ public class GridObject
 {
     private GridSystem gridSystem;
     private GridPosition gridPosition;
+    
+    /// <summary>
+    /// 单位列表
+    /// </summary>
     private List<Unit> unitList;
 
     public GridObject(GridSystem gridSystem, GridPosition gridPosition)
@@ -19,7 +23,7 @@ public class GridObject
     }
 
     /// <summary>
-    /// 返回单位所在的格子位置文本
+    /// 返回单位所在的格子位置的文本
     /// </summary>
     /// <returns></returns>
     public override string ToString()
