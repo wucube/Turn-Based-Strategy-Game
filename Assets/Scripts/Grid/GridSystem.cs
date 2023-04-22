@@ -42,7 +42,7 @@ public class GridSystem
                 GridPosition gridPosition = new GridPosition(x, z);
 
                 //创建并记录格子对象
-                GridObjectArray[x, z] = new GridObject(this,gridPosition);
+                GridObjectArray[x, z] = new GridObject(this, gridPosition);
 
                 //绘制格子线
                 //Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x, z) + Vector3.right * .2f, Color.white,1000);
@@ -103,5 +103,18 @@ public class GridSystem
     public GridObject GetGridObject(GridPosition gridPosition)
     {
         return GridObjectArray[gridPosition.x, gridPosition.z];
+    }
+    
+    /// <summary>
+    /// 格子位置是否有效
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns></returns>
+    public bool IsValidGridPosition(GridPosition gridPosition)
+    {
+        return gridPosition.x >= 0 && 
+               gridPosition.z >= 0 && 
+               gridPosition.x <= width && 
+               gridPosition.z <= height; 
     }
 }

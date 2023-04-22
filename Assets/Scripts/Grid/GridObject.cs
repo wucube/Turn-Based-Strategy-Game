@@ -11,7 +11,7 @@ public class GridObject
     private GridPosition gridPosition;
     
     /// <summary>
-    /// 单位列表
+    /// 格子对象上的单位列表
     /// </summary>
     private List<Unit> unitList;
 
@@ -61,6 +61,15 @@ public class GridObject
     public List<Unit> GetUnitList()
     {
         return unitList;
+    }
+    
+    /// <summary>
+    /// 是否有单位在格子上
+    /// </summary>
+    /// <returns></returns>
+    public bool HasAnyUnit()
+    {
+        return unitList.Count > 0;
     }
 
 }

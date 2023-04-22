@@ -46,14 +46,22 @@ public class UnitActionSystem : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             if(TryHandleUnitSelection()) return;
-
-            //单位朝鼠标点击处移动
-            selectedUnit.Move(MouseWorld.GetPosition());
+            
+            //得到鼠标点击的格子位置
+            GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
+            
+            //若鼠标点击的格子位置为有效位置
+            if(selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
+            {
+                //单位朝鼠标点击处移动
+                selectedUnit.GetMoveAction().Move(mouseGridPosition);
+            }
+            
         }
     }
 
     /// <summary>
-    /// 尝试获取选中的单位
+    /// 尝试获取鼠标点击的单位
     /// </summary>
     /// 
     private bool TryHandleUnitSelection(){
@@ -65,11 +73,9 @@ public class UnitActionSystem : MonoBehaviour
             if(raycastHit.transform.TryGetComponent<Unit>(out Unit unit))
             {
                 SetSelectedUnit(unit);
-
                 return true;
             }
         }
-
         return false;
     }
 

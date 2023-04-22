@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f49a60e2e2de82241933def10fd36176, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unit: {fileID: 1083687282}
 --- !u!4 &211031735
 Transform:
   m_ObjectHideFlags: 0
@@ -1151,6 +1152,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4540325843373718585, guid: bc6d8b02855a7024084394fd41605505,
+        type: 3}
+      propertyPath: maxMoveDistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6794896280730412290, guid: bc6d8b02855a7024084394fd41605505,
         type: 3}
       propertyPath: m_Name

@@ -8,32 +8,17 @@ using UnityEngine;
 /// </summary>
 public class Unit : MonoBehaviour
 {   
-    [SerializeField] private Animator unitAnimator;
-
     /// <summary>
-    /// 旋转速度
-    /// </summary>
-    [SerializeField] private float rotateSpeed;
-    /// <summary>
-    /// 移动速度
-    /// </summary>
-    [SerializeField] private float moveSpeed;
-
-    /// <summary>
-    /// 移动到的目标位置
-    /// </summary>
-    private Vector3 targetPosition;
-
-    /// <summary>
-    /// 单位的初始格子位置
+    /// 单位对应的格子位置
     /// </summary>
     private GridPosition gridPosition;
+    private MoveAction moveAction;
+    
 
-    private void Awake() {
-        
-        targetPosition = transform.position;
+    private void Awake()
+    {
+        moveAction = GetComponent<MoveAction>();
     }
-
     private void Start() 
     {
         //根据单位的位置得到对应格子位置
@@ -45,22 +30,7 @@ public class Unit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float stoppingDistance = .1f;
-
-        //单位的位置与目标位置距离大于0.1，单位继承朝目标移动
-        if(Vector3.Distance(transform.position,targetPosition) > stoppingDistance)
-        {
-            Vector3 moveDirection = (targetPosition - transform.position).normalized;
-            transform.position += moveDirection * moveSpeed * Time.deltaTime;
-
-            //单位面朝向始终与移动方向一致
-            transform.forward = Vector3.Lerp(transform.forward, moveDirection, rotateSpeed * Time.deltaTime);
-
-            unitAnimator.SetBool("IsWalking", true);
-
-        }else{
-            unitAnimator.SetBool("IsWalking", false);
-        }
+        
 
         //根据单位位置得到新的格子位置
         GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
@@ -71,16 +41,24 @@ public class Unit : MonoBehaviour
             LevelGrid.Instance.UnitMovedGridPosition(this, gridPosition, newGridPosition);
             gridPosition = newGridPosition;
         }
-
-        
     }
 
     /// <summary>
-    /// 单位移动
+    /// 得到 移动行为 类
     /// </summary>
-    /// <param name="targetPosition"></param>
-    public void Move(Vector3 targetPosition)
+    /// <returns></returns>
+    public MoveAction GetMoveAction()
     {
-        this.targetPosition = targetPosition;
+        return moveAction;
     }
+
+    /// <summary>
+    /// 得到单位的格子位置
+    /// </summary>
+    /// <returns></returns>
+    public GridPosition GetGridPosition()
+    {
+        return gridPosition;
+    }
+    
 }

@@ -88,4 +88,29 @@ public class LevelGrid : MonoBehaviour
     /// <param name="worldPosition"></param>
     /// <returns></returns>
     public GridPosition GetGridPosition(Vector3 worldPosition) => gridSystem.GetGridPosition(worldPosition);
+    
+    /// <summary>
+    /// 根据格子位置得到对应世界坐标
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns></returns>
+    public Vector3 GetWorldPosition(GridPosition gridPosition) => gridSystem.GetWorldPosition(gridPosition);
+     
+    /// <summary>
+    /// 格子位置是否有效
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns></returns>
+    public bool IsValidGridPosition(GridPosition gridPosition) => gridSystem.IsValidGridPosition(gridPosition);
+
+    /// <summary>
+    /// 格子位置上否有单位存在
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns></returns>
+    public bool HasAnyUnitOnGridPosition(GridPosition gridPosition)
+    {
+        GridObject gridObject = gridSystem.GetGridObject(gridPosition);
+        return gridObject.HasAnyUnit();
+    }
 }

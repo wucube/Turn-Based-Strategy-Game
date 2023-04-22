@@ -19,7 +19,6 @@ public struct GridPosition : IEquatable<GridPosition>
         this.z = z;
     }
 
-    
     public bool Equals(GridPosition other)
     {
         return this == other;
@@ -37,7 +36,6 @@ public struct GridPosition : IEquatable<GridPosition>
         return HashCode.Combine(x, z);
     }
 #endregion
-    
 
     /// <summary>
     /// 返回格子位置索引的字符串
@@ -63,4 +61,7 @@ public struct GridPosition : IEquatable<GridPosition>
     /// <param name="b"></param>
     /// <returns></returns>
     public static bool operator !=(GridPosition a, GridPosition b) => !( a == b );
+
+    public static GridPosition operator +(GridPosition a, GridPosition b) => new GridPosition(a.x + b.x, a.z + b.z);
+    public static GridPosition operator -(GridPosition a, GridPosition b) => new GridPosition(a.x - b.x, a.z - b.z);
 }
