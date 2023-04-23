@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 选中单位的可视化
+/// </summary>
 public class UnitSelectedVisual : MonoBehaviour
 {
     [SerializeField] private Unit unit;
@@ -11,11 +14,11 @@ public class UnitSelectedVisual : MonoBehaviour
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
-        
     }
 
     private void Start() 
     {
+        //选择的单位改变事件订阅对应事件处理器
         UnitActionSystem.Instance.OnSelectedUnitChanged += UnitActionSystem_OnSelectedUnitChanged;
         UpdateVisual();
     }
@@ -29,8 +32,6 @@ public class UnitSelectedVisual : MonoBehaviour
     {
         UpdateVisual();
     }
-
-
     /// <summary>
     /// 更新单位被选中的标记
     /// </summary>

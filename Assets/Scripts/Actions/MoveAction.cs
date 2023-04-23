@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 单位的移动行为
 /// </summary>
-public class MoveAction : MonoBehaviour
+public class MoveAction : BaseAction
 {
 
     [SerializeField] private Animator unitAnimator;
@@ -14,54 +15,59 @@ public class MoveAction : MonoBehaviour
     /// </summary>
     [SerializeField] private int maxMoveDistance = 4;
 
-    private Unit unit;
     /// <summary>
     /// 移动到的目标位置
     /// </summary>
     private Vector3 targetPosition;
+
     /// <summary>
     /// 旋转速度
     /// </summary>
-    [SerializeField] private float rotateSpeed;
+    [SerializeField] private float rotateSpeed = 4;
     /// <summary>
     /// 移动速度
     /// </summary>
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float moveSpeed = 5;
 
-    private void Awake() 
+    protected override void Awake() 
     {
-        unit = GetComponent<Unit>();
+        base.Awake();
         targetPosition = transform.position;
     }
-
-
     private void Update()
     {
+        if(!isActive) return;
+
         float stoppingDistance = .1f;
+
+        Vector3 moveDirection = (targetPosition - transform.position).normalized;
 
         //单位的位置与目标位置距离大于0.1，单位继承朝目标移动
         if(Vector3.Distance(transform.position,targetPosition) > stoppingDistance)
         {
-            Vector3 moveDirection = (targetPosition - transform.position).normalized;
             transform.position += moveDirection * moveSpeed * Time.deltaTime;
-
-            //单位面朝向始终与移动方向一致
-            transform.forward = Vector3.Lerp(transform.forward, moveDirection, rotateSpeed * Time.deltaTime);
-
+            
             unitAnimator.SetBool("IsWalking", true);
 
-        }else{
+        }else{ //否则停止移动
             unitAnimator.SetBool("IsWalking", false);
+            isActive = false;
+            onActionComplete();
         }
+
+        //单位面朝向始终与移动方向一致
+        transform.forward = Vector3.Lerp(transform.forward, moveDirection, rotateSpeed * Time.deltaTime);
     }
 
     /// <summary>
     /// 单位朝目标格子位置移动
     /// </summary>
     /// <param name="gridPosition"></param>
-    public void Move(GridPosition gridPosition)
+    public void Move(GridPosition gridPosition, Action onActionComplete)
     {
+        this.onActionComplete = onActionComplete;
         this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        isActive = true;
     }
 
     /// <summary>
@@ -82,7 +88,8 @@ public class MoveAction : MonoBehaviour
     public List<GridPosition> GetValidActionGridPotitionList()
     {
         List<GridPosition> validGridPositionList = new List<GridPosition>();
-
+        
+        //单位格子的位置
         GridPosition unitGridPosition = unit.GetGridPosition();
 
         for (int x = -maxMoveDistance; x <= maxMoveDistance; x++)
@@ -91,6 +98,7 @@ public class MoveAction : MonoBehaviour
             {
                 //格子的偏移位置
                 GridPosition offsetGridPosition = new GridPosition(x, z);
+                //格子的目标位置
                 GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
 
                 if(!LevelGrid.Instance.IsValidGridPosition(testGridPosition))

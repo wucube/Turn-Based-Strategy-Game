@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 单位脚本
+/// 单位
 /// </summary>
 public class Unit : MonoBehaviour
 {   
@@ -12,12 +12,20 @@ public class Unit : MonoBehaviour
     /// 单位对应的格子位置
     /// </summary>
     private GridPosition gridPosition;
+    /// <summary>
+    /// 单位的移动行为
+    /// </summary>
     private MoveAction moveAction;
-    
 
+    /// <summary>
+    /// 单位的自旋转行为
+    /// </summary>
+    private SpinAction spinAction;
+    
     private void Awake()
     {
         moveAction = GetComponent<MoveAction>();
+        spinAction = GetComponent<SpinAction>();
     }
     private void Start() 
     {
@@ -30,8 +38,6 @@ public class Unit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-
         //根据单位位置得到新的格子位置
         GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
         //如果新的格子位置不等于初始的格子位置，表明单位的格子位置已经改变
@@ -51,7 +57,16 @@ public class Unit : MonoBehaviour
     {
         return moveAction;
     }
-
+    
+    /// <summary>
+    /// 获取 自旋转行为 类
+    /// </summary>
+    /// <returns></returns>
+    public SpinAction GetSpinAction()
+    {
+        return spinAction;
+    }
+    
     /// <summary>
     /// 得到单位的格子位置
     /// </summary>

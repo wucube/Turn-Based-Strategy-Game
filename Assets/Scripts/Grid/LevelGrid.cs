@@ -33,7 +33,6 @@ public class LevelGrid : MonoBehaviour
         gridSystem.CreateDebugObjects(gridDebugObjectPrefab);
         
     }
-
     /// <summary>
     /// 根据格子位置添加对应单位
     /// </summary>
@@ -102,6 +101,18 @@ public class LevelGrid : MonoBehaviour
     /// <param name="gridPosition"></param>
     /// <returns></returns>
     public bool IsValidGridPosition(GridPosition gridPosition) => gridSystem.IsValidGridPosition(gridPosition);
+
+    /// <summary>
+    /// 获取格子系统的宽
+    /// </summary>
+    /// <returns></returns>
+    public int GetWidth() => gridSystem.GetWidth();
+
+    /// <summary>
+    /// 获取格子系统的高
+    /// </summary>
+    /// <returns></returns>
+    public int GetHeight() => gridSystem.GetHeight();
 
     /// <summary>
     /// 格子位置上否有单位存在

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 单位的选择系统
+/// 单位的行为系统
 /// </summary>
 public class UnitActionSystem : MonoBehaviour
 {   
@@ -27,6 +27,11 @@ public class UnitActionSystem : MonoBehaviour
     /// <returns></returns>
     [SerializeField] private LayerMask unitLayerMask;
 
+    /// <summary>
+    /// 单位是否处于忙碌
+    /// </summary>
+    private bool isBusy;
+
 
     void Awake()
     {
@@ -42,6 +47,8 @@ public class UnitActionSystem : MonoBehaviour
 
     void Update()
     {
+        if(isBusy) return;
+
         //鼠标左键按下
         if(Input.GetMouseButtonDown(0))
         {
@@ -53,18 +60,40 @@ public class UnitActionSystem : MonoBehaviour
             //若鼠标点击的格子位置为有效位置
             if(selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
             {
+                SetBusy();
                 //单位朝鼠标点击处移动
-                selectedUnit.GetMoveAction().Move(mouseGridPosition);
+                selectedUnit.GetMoveAction().Move(mouseGridPosition, ClearBusy);
             }
-            
         }
+        
+        //鼠标右键按下
+        if(Input.GetMouseButton(1))
+        {
+            SetBusy();
+            selectedUnit.GetSpinAction().Spin(ClearBusy);
+        }
+    }
+ 
+    /// <summary>
+    /// 设置忙碌状态
+    /// </summary>
+    private void SetBusy()
+    {
+        isBusy = true;
     }
 
     /// <summary>
+    /// 清除忙碌状态
+    /// </summary>
+    private void ClearBusy()
+    {
+        isBusy = false;
+    }
+    /// <summary>
     /// 尝试获取鼠标点击的单位
     /// </summary>
-    /// 
-    private bool TryHandleUnitSelection(){
+    private bool TryHandleUnitSelection()
+    {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         //如果屏幕射线检测到对象
         if(Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
@@ -87,7 +116,7 @@ public class UnitActionSystem : MonoBehaviour
     {
         selectedUnit = unit;
 
-        OnSelectedUnitChanged?.Invoke(this,EventArgs.Empty);
+        OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
     }
 
     /// <summary>

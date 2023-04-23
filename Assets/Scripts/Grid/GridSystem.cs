@@ -32,7 +32,6 @@ public class GridSystem
         this.height = height;
         this.cellSize = cellSize;
 
-
         GridObjectArray = new GridObject[width, height];
         
         for (int x = 0; x < width; x++)
@@ -116,5 +115,23 @@ public class GridSystem
                gridPosition.z >= 0 && 
                gridPosition.x <= width && 
                gridPosition.z <= height; 
+    }
+
+    /// <summary>
+    /// 获取格子系统的宽
+    /// </summary>
+    /// <returns></returns>
+    public int GetWidth()
+    {
+        return width;
+    }
+
+    /// <summary>
+    /// 获取格子系统的高
+    /// </summary>
+    /// <returns></returns>
+    public int GetHeight()
+    {
+        return height;
     }
 }
